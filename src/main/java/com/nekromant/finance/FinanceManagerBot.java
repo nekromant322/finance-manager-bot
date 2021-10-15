@@ -1,7 +1,6 @@
 package com.nekromant.finance;
 
 import com.nekromant.finance.commands.MentoringReviewCommand;
-import com.nekromant.finance.service.SpecialChatService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +25,6 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     private String botToken;
 
     @Autowired
-    private SpecialChatService specialChatService;
-
-
-    @Autowired
     public FinanceManagerBot(List<MentoringReviewCommand> allCommands) {
         super();
         allCommands.forEach(this::register);
@@ -44,10 +39,10 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     @Override
     public void processNonCommandUpdate(Update update) {
         if (update.hasMessage()) {
-            if (!(update.getMessage().getChatId().toString().equals(specialChatService.getMentorsChatId()) ||
-                    update.getMessage().getChatId().toString().equals(specialChatService.getReportsChatId()))) {
-                sendMessage(update);
-            }
+//            if (!(update.getMessage().getChatId().toString().equals(specialChatService.getFamilyChatId()) ||
+//                    update.getMessage().getChatId().toString().equals(specialChatService.getReportsChatId()))) {
+//                sendMessage(update);
+//            }
         } else if (update.hasCallbackQuery()) {
 
 //            String callBackData = update.getCallbackQuery().getData();

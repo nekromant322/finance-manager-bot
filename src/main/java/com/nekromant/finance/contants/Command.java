@@ -2,7 +2,7 @@ package com.nekromant.finance.contants;
 
 public enum Command {
 
-    REGISTER_MENTOR("register_mentor", "Зарегистрировать чат как менторский");
+    START("start", "Начать работу с ботом");
 
 
     private String alias;
