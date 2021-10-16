@@ -14,10 +14,11 @@ reminders:
 
 spring:
   datasource:
-    password: ${PROD_POSTGRE_PASSWORD}
-    username: ${PROD_POSTGRE_USERNAME}
-    url: ${PROD_POSTGRE_URL}
+    password: ${PROD_POSTGRE_PASSWORD:postgres}
+    username: ${PROD_POSTGRE_USERNAME:postgres}
+    url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432}
     driver-class-name: org.postgresql.Driver
+
 
   jpa:
     properties:
@@ -27,5 +28,5 @@ spring:
         format_sql: true
         use_sql_comments: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     generate-ddl: true
