@@ -1,10 +1,11 @@
 package com.nekromant.finance.models;
 
-import org.apache.catalina.User;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -21,18 +22,4 @@ public class Category {
 
     @Column(name = "type")
     private Type type;
-
-    public Category() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
 }
