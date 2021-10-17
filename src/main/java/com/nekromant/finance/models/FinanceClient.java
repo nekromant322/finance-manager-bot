@@ -1,8 +1,11 @@
 package com.nekromant.finance.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "clients")
 public class FinanceClient {
@@ -20,23 +23,4 @@ public class FinanceClient {
     @OneToMany
     @Column
     private List<Transaction> transactionsHistory;
-
-    public FinanceClient() {
-
-    }
-
-    public FinanceClient(Long chatId, List<String> userNames, List<Category> categories,List<Transaction>transactionsHistory) {
-        this.chatId = chatId;
-        this.userNames = userNames;
-        this.categories = categories;
-        this.transactionsHistory = transactionsHistory;
-    }
-
-    public Long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
-    }
 }

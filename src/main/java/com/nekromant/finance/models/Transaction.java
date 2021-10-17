@@ -1,16 +1,19 @@
 package com.nekromant.finance.models;
 
-import javax.persistence.*;
+import lombok.Builder;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.util.UUID;
+
+@Builder
+@Data
 @Table(name = "transactions")
 @Entity
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "type")
-    private Type type;
+    private UUID id;
 
     @Column(name = "comment")
     private String commment;
@@ -20,16 +23,4 @@ public class Transaction {
 
     @OneToOne
     private Category category;
-
-    public Transaction() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

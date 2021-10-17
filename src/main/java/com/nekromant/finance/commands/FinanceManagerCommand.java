@@ -8,9 +8,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-public abstract class MentoringReviewCommand extends BotCommand {
+public abstract class FinanceManagerCommand extends BotCommand {
 
-    public MentoringReviewCommand(String commandIdentifier, String description) {
+    public FinanceManagerCommand(String commandIdentifier, String description) {
         super(commandIdentifier, description);
     }
 
