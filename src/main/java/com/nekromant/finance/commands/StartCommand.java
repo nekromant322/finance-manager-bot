@@ -9,12 +9,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.nekromant.finance.contants.Command.START;
 
 @Component
-public class StartCommand extends MentoringReviewCommand {
+public class StartCommand extends FinanceManagerCommand {
 
 
     public StartCommand() {
