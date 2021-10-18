@@ -2,8 +2,14 @@ package com.nekromant.finance.models;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Data
 @Entity
@@ -23,4 +29,7 @@ public class FinanceClient {
     @OneToMany
     @Column
     private List<Transaction> transactionsHistory;
+
+    @Column
+    private LocalDateTime subscriptionEndsLocalDate;
 }
