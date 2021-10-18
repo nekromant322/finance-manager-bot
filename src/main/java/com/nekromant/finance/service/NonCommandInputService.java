@@ -17,7 +17,7 @@ public class NonCommandInputService {
     private final InputParser inputParser;
     private final CategorySearcher categorySearcher;
     private final FinanceClientRepository financeClientRepository;
-    private final SimpleMessageSender simpleMessageSender;
+    private final MessageSender messageSender;
 
     public void processNonCommandInput(String rawInput, long chatId) {
         NonCommandInput nonCommandInput = inputParser.parseNonCommandInput(rawInput);
@@ -36,7 +36,7 @@ public class NonCommandInputService {
                                 .sum(nonCommandInput.getMoney())
                                 .build()
                 ));
-        simpleMessageSender.sendMessage("залупа", String.valueOf(chatId));
+        messageSender.sendMessage("Твоя залупа записана в расходы", String.valueOf(chatId));
         //TODO отправить текст, что все заебись, т.к. не выпало исключения
     }
 
