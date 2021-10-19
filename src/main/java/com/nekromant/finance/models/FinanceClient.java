@@ -8,9 +8,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.*;
-import java.util.List;
-
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Data
 @Entity
@@ -33,12 +38,11 @@ public class FinanceClient {
     @Column
     private List<Transaction> transactionsHistory;
 
+    @Column
+    private LocalDateTime subscriptionEndsLocalDate;
+
     public FinanceClient() {
 
-    }
-
-    public FinanceClient(Long id) {
-        this.chatId = id;
     }
 
     public FinanceClient(Long id, List<String> userNames, List<Category> categories) {
