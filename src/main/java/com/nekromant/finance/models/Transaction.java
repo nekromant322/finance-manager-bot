@@ -21,7 +21,7 @@ public class Transaction {
     @Column(name = "sum")
     private Double sum;
 
-    @OneToOne
+    @ManyToOne
     private Category category;
 
     public Transaction() {
