@@ -23,4 +23,15 @@ public class Transaction {
 
     @OneToOne
     private Category category;
+
+    public Transaction() {
+
+    }
+
+    public Transaction(UUID id, String commment, Double sum, Category category) {
+        this.id = id;
+        this.commment = commment;
+        this.sum = sum;
+        this.category = category;
+    }
 }

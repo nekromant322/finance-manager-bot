@@ -1,9 +1,16 @@
 package com.nekromant.finance.models;
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.*;
 import java.util.List;
+
 
 @Data
 @Entity
@@ -14,13 +21,38 @@ public class FinanceClient {
     private Long chatId;
     @Column
     @ElementCollection
-    List<String> userNames;
+    private List<String> userNames;
 
     @OneToMany
+    @NotFound(action = NotFoundAction.IGNORE)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Column
     private List<Category> categories;
 
     @OneToMany
     @Column
     private List<Transaction> transactionsHistory;
+
+    public FinanceClient() {
+
+    }
+
+    public FinanceClient(Long id) {
+        this.chatId = id;
+    }
+
+    public FinanceClient(Long id, List<String> userNames, List<Category> categories) {
+        this.chatId = id;
+        this.userNames = userNames;
+        this.categories = categories;
+    }
+
+    public FinanceClient(Long chatId, List<String> userNames, List<Category> categories, List<Transaction> transactionsHistory) {
+        this.chatId = chatId;
+        this.userNames = userNames;
+        this.categories = categories;
+        this.transactionsHistory = transactionsHistory;
+    }
+
+
 }
