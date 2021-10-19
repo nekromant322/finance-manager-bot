@@ -1,22 +1,28 @@
 package com.nekromant.finance.commands;
 
+import com.nekromant.finance.models.FinanceClient;
+import com.nekromant.finance.config.properties.DefaultCategoriesProperties;
+import com.nekromant.finance.repository.FinanceClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.nekromant.finance.contants.Command.START;
 
 @Component
 public class StartCommand extends FinanceManagerCommand {
+    @Autowired
+    private FinanceClientRepository financeClientRepository;
 
+    @Autowired
+    private DefaultCategoriesProperties defaultCategories;
 
     public StartCommand() {
         super(START.getAlias(), START.getDescription());
@@ -30,25 +36,27 @@ public class StartCommand extends FinanceManagerCommand {
         message.setChatId(chat.getId().toString());
         message.setText("Добро пожаловать");
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboardRowList = new ArrayList<>();
 
-        KeyboardRow keyboardRow = new KeyboardRow();
-        KeyboardButton keyboardButton = new KeyboardButton();
-        keyboardButton.setText("/start");
-        keyboardRow.add(keyboardButton);
-        KeyboardButton keyboardButton1 = new KeyboardButton();
-        keyboardButton1.setText("Расход");
-        keyboardRow.add(keyboardButton1);
-        KeyboardButton keyboardButton2 = new KeyboardButton();
-        keyboardButton2.setText("Подписки");
-        keyboardRow.add(keyboardButton2);
-        keyboardRowList.add(keyboardRow);
+        Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chat.getId());
+        if (optionalFinanceClient.isEmpty()) {
+            financeClientRepository.save(new FinanceClient(chat.getId(),
+                    List.of(user.getUserName()),
+                    defaultCategories.getCategories()));
+        }
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonRow = new ArrayList<>();
+        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+        inlineKeyboardButton.setText("Knopka");
+        inlineKeyboardButton.setCallbackData("callbackData");
 
+        keyboardButtonRow.add(inlineKeyboardButton);
+        rowList.add(keyboardButtonRow);
 
-        replyKeyboardMarkup.setKeyboard(keyboardRowList);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        message.setReplyMarkup(replyKeyboardMarkup);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        // replyKeyboardMarkup.setResizeKeyboard(true);
+        message.setReplyMarkup(inlineKeyboardMarkup);
 
         execute(absSender, message, user);
     }

@@ -2,8 +2,8 @@ package com.nekromant.finance.contants;
 
 public enum Command {
 
-    START("start", "Начать работу с ботом");
-
+    START("start", "Начать работу с ботом"),
+    CATEGORIES("categories","Редактировать категории");
 
     private String alias;
     private String description;

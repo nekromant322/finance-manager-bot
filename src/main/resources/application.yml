@@ -30,3 +30,43 @@ spring:
     hibernate:
       ddl-auto: update
     generate-ddl: true
+
+default-categories:
+  categories:
+    - name: Продукты
+      keywords: еда, фрукты, овощи, продукты, азбука, перекресток, питание, еда, хлеб, мороженое, вода, сок, продукты, киб, молоко, печеньки, кефир, лента, глобус, ашан
+      type: CREDIT
+    - name: Транспорт
+      keywords: метро, такси, электричка, жд, трамвай, тройка, дорога, автобус, проезд, маршрутка
+      type: CREDIT
+    - name: Отдых и развлечения
+      keywords: бухалово, кино, театр, клуб
+      type: CREDIT
+    - name: Подарки
+      keywords: цветы, др, открытка
+      type: CREDIT
+    - name: Одежда, обувь и прочие аксессуары
+      keywords: кроссовки, обувь, футболка, одежка, куртка, шапка
+      type: CREDIT
+    - name: Образование
+      keywords: курсы, книги, вебинар, тренинг
+      type: CREDIT
+    - name: Автомобиль
+      keywords: бензин, то, осаго, парковка, стоянка
+      type: CREDIT
+    - name: Кафе и рестораны
+      keywords: макдак, кфс, кинг, бар, паб
+      type: CREDIT
+    - name: Здоровье и фитнес
+      keywords: абонемент, тренажерка, качалка, спорт
+      type: CREDIT
+    - name: Дети
+      keywords: дочь, сын, садик, школа, репетитор
+      type: CREDIT
+    - name: Зарплата
+      keywords: зп, зарплата
+      type: DEBIT
+    - name: Другое
+      keywords:
+      type: CREDIT
+
