@@ -30,14 +30,37 @@ public class CategoriesCommand extends FinanceManagerCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<Category> rowList = new ArrayList<>();
-        Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chat.getId());
-        FinanceClient financeClient = optionalFinanceClient.get();
-        rowList = financeClient.getCategories();
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
-        message.setText("Редактирование категорий");
-        execute(absSender, message, user);
+        message.setText("Управление категориями");
+        FinanceClient financeClient;
+        Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chat.getId());
+
+        if (optionalFinanceClient.isPresent()) {
+            financeClient = optionalFinanceClient.get();
+            List<Category> categories = financeClient.getCategories();
+
+            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+            List<InlineKeyboardButton> keyboardButtons = new ArrayList<>();
+            List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+
+            for (int i = 0; i < categories.size(); i++) {
+                if (i % 2 == 0) {
+                    keyboardButtons = new ArrayList<>();
+                    rowList.add(keyboardButtons);
+                }
+                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                inlineKeyboardButton.setText(categories.get(i).getName());
+                inlineKeyboardButton.setCallbackData(categories.get(i).getId().toString());
+                keyboardButtons.add(inlineKeyboardButton);
+
+
+            }
+
+            inlineKeyboardMarkup.setKeyboard(rowList);
+            message.setReplyMarkup(inlineKeyboardMarkup);
+            execute(absSender, message, user);
+        }
     }
 }
