@@ -18,6 +18,8 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.nekromant.finance.contants.Command.CATEGORIES;
 
@@ -25,10 +27,10 @@ import static com.nekromant.finance.contants.Command.CATEGORIES;
 public class CategoriesCommand extends FinanceManagerCommand {
 
     @Autowired
-    FinanceClientRepository financeClientRepository;
+    private FinanceClientRepository financeClientRepository;
 
     @Autowired
-    MessageSender messageSender;
+    private MessageSender messageSender;
 
     public CategoriesCommand() {
         super(CATEGORIES.getAlias(), CATEGORIES.getDescription());
@@ -37,9 +39,7 @@ public class CategoriesCommand extends FinanceManagerCommand {
     @SneakyThrows
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-        SendMessage message = new SendMessage();
-        message.setChatId(chat.getId().toString());
-        message.setText("Управление категориями");
+
         FinanceClient financeClient;
         Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chat.getId());
 
@@ -49,15 +49,14 @@ public class CategoriesCommand extends FinanceManagerCommand {
 
             List<InlineKeyboardButton> keyboardButtons = new ArrayList<>();
 
-            for (Category category : categories) {
+            IntStream.range(0, categories.size()).forEach(i -> {
                 InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(category.getName());
-                inlineKeyboardButton.setCallbackData(category.getId().toString());
+                inlineKeyboardButton.setText(categories.get(i).getName());
+                inlineKeyboardButton.setCallbackData("get_category_info " + categories.get(i).getId());
                 keyboardButtons.add(inlineKeyboardButton);
-            }
-            messageSender.sendMessageWithInlineButtons(chat.getId(),"Редактирование категорий", keyboardButtons, 3);
+            });
 
-            //execute(absSender, message, user);
+            messageSender.sendMessageWithInlineButtons(chat.getId(), "Редактирование категорий", keyboardButtons, 3);
         }
     }
 }
