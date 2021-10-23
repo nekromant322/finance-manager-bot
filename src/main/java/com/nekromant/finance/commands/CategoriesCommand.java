@@ -56,7 +56,7 @@ public class CategoriesCommand extends FinanceManagerCommand {
                 keyboardButtons.add(inlineKeyboardButton);
             });
 
-            messageSender.sendMessageWithInlineButtons(chat.getId(), "Редактирование категорий", keyboardButtons, 3);
+            messageSender.sendMessageWithInlineButtons(chat.getId(), keyboardButtons, 3);
         }
     }
 }
