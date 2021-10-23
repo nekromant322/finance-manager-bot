@@ -47,20 +47,6 @@ public class StartCommand extends FinanceManagerCommand {
                     List.of(user.getUserName()),
                     defaultCategories.getCategories())));
         }
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonRow = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-        inlineKeyboardButton.setText("Knopka");
-        inlineKeyboardButton.setCallbackData("callbackData");
-
-        keyboardButtonRow.add(inlineKeyboardButton);
-        rowList.add(keyboardButtonRow);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        message.setReplyMarkup(inlineKeyboardMarkup);
         execute(absSender, message, user);
     }
 }

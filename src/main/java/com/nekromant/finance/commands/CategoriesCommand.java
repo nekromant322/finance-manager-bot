@@ -3,6 +3,9 @@ package com.nekromant.finance.commands;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.models.FinanceClient;
 import com.nekromant.finance.repository.FinanceClientRepository;
+import com.nekromant.finance.service.MessageSender;
+import lombok.SneakyThrows;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -24,10 +27,14 @@ public class CategoriesCommand extends FinanceManagerCommand {
     @Autowired
     FinanceClientRepository financeClientRepository;
 
+    @Autowired
+    MessageSender messageSender;
+
     public CategoriesCommand() {
         super(CATEGORIES.getAlias(), CATEGORIES.getDescription());
     }
 
+    @SneakyThrows
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         SendMessage message = new SendMessage();
@@ -40,27 +47,17 @@ public class CategoriesCommand extends FinanceManagerCommand {
             financeClient = optionalFinanceClient.get();
             List<Category> categories = financeClient.getCategories();
 
-            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-
             List<InlineKeyboardButton> keyboardButtons = new ArrayList<>();
-            List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
-            for (int i = 0; i < categories.size(); i++) {
-                if (i % 2 == 0) {
-                    keyboardButtons = new ArrayList<>();
-                    rowList.add(keyboardButtons);
-                }
+            for (Category category : categories) {
                 InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(categories.get(i).getName());
-                inlineKeyboardButton.setCallbackData(categories.get(i).getId().toString());
+                inlineKeyboardButton.setText(category.getName());
+                inlineKeyboardButton.setCallbackData(category.getId().toString());
                 keyboardButtons.add(inlineKeyboardButton);
-
-
             }
+            messageSender.sendMessageWithInlineButtons(chat.getId(),"Редактирование категорий", keyboardButtons, 3);
 
-            inlineKeyboardMarkup.setKeyboard(rowList);
-            message.setReplyMarkup(inlineKeyboardMarkup);
-            execute(absSender, message, user);
+            //execute(absSender, message, user);
         }
     }
 }
