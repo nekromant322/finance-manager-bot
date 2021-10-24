@@ -4,16 +4,8 @@ import lombok.Data;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,7 +20,7 @@ public class FinanceClient {
     @ElementCollection
     private List<String> userNames;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Column
