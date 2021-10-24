@@ -1,5 +1,6 @@
 package com.nekromant.finance.commands;
 
+import com.nekromant.finance.contants.CallBackData;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.models.FinanceClient;
 import com.nekromant.finance.repository.FinanceClientRepository;
@@ -18,6 +19,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -47,16 +49,15 @@ public class CategoriesCommand extends FinanceManagerCommand {
             financeClient = optionalFinanceClient.get();
             List<Category> categories = financeClient.getCategories();
 
-            List<InlineKeyboardButton> keyboardButtons = new ArrayList<>();
+            List<InlineKeyboardButton> buttons = categories.stream().map(v -> {
+                        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton(v.getName());
+                        inlineKeyboardButton.setCallbackData(CallBackData.GET_CATEGORY_INFO.getAlias() + v.getId());
+                        return inlineKeyboardButton;
+                    })
+                    .collect(Collectors.toList());
 
-            IntStream.range(0, categories.size()).forEach(i -> {
-                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(categories.get(i).getName());
-                inlineKeyboardButton.setCallbackData("get_category_info " + categories.get(i).getId());
-                keyboardButtons.add(inlineKeyboardButton);
-            });
-
-            messageSender.sendMessageWithInlineButtons(chat.getId(), keyboardButtons, 3);
+            messageSender.sendMessageWithInlineButtons(chat.getId(),
+                    buttons, 3);
         }
     }
 }
