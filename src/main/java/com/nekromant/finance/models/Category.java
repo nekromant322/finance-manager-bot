@@ -1,6 +1,10 @@
 package com.nekromant.finance.models;
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,14 +18,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "keywords")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ElementCollection
     private List<String> keywords;
 
-    @Column(name = "type")
     private Type type;
 
     public Category() {
