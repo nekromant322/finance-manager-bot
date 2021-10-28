@@ -37,13 +37,13 @@ public class CategoriesProcessor implements CallBackProcessor {
         bot.execute(new DeleteMessage(data.split(" ")[2], update.getCallbackQuery().getMessage().getMessageId()));
         List<InlineKeyboardButton> buttons = new ArrayList<>();
 
+        InlineKeyboardButton keywordsButton = new InlineKeyboardButton();
+        keywordsButton.setText("Ключевые слова");
+        keywordsButton.setCallbackData("!get_keywords_info " + Long.parseLong(data.split(" ")[1]));
+
         InlineKeyboardButton editNameButton = new InlineKeyboardButton();
         editNameButton.setText("Изменить название");
         editNameButton.setCallbackData("!edit_name " + Long.parseLong(data.split(" ")[1]));
-
-        InlineKeyboardButton editKeywordsButton = new InlineKeyboardButton();
-        editKeywordsButton.setText("Изменить ключевые слова");
-        editKeywordsButton.setCallbackData("!edit_keywords " + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton deleteButton = new InlineKeyboardButton();
         deleteButton.setText("Удалить категорию");
@@ -53,21 +53,17 @@ public class CategoriesProcessor implements CallBackProcessor {
         previousButton.setText("Назад");
         previousButton.setCallbackData(Command.CATEGORIES.getAlias());
 
+        buttons.add(keywordsButton);
         buttons.add(editNameButton);
-        buttons.add(editKeywordsButton);
         buttons.add(deleteButton);
-
         buttons.add(previousButton);
+
         Optional<Category> optionalCategory = categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
         if (optionalCategory.isPresent()) {
-            List<String> keywords = categoryRepository.findKeywordsByCategoryId(optionalCategory.get().getId());
-            messageSender.sendMessage(keywords.toString(), String.valueOf(Long.parseLong(data.split(" ")[2])));
+            messageSender.sendMessageWithInlineButtons(Long.parseLong(data.split(" ")[2]),
+                    "Выбранная категория: " + optionalCategory.get().getName(),
+                    buttons, 1);
         }
-        messageSender.sendMessageWithInlineButtons(Long.parseLong(data.split(" ")[2]),
-                "Выбранная категория: " + optionalCategory.get().getName(),
-                buttons, 1);
-
-
     }
 
     @Override
