@@ -46,7 +46,7 @@ public class CategoriesCommand extends FinanceManagerCommand {
 
             List<InlineKeyboardButton> buttons = categories.stream().map(v -> {
                         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton(v.getName());
-                        inlineKeyboardButton.setCallbackData(CallBackData.GET_CATEGORY_INFO.getAlias() + " " + v.getId() + " " + chat.getId());
+                            inlineKeyboardButton.setCallbackData(CallBackData.GET_CATEGORY_INFO.getAlias() + " " + v.getId() + " " + chat.getId());
                         return inlineKeyboardButton;
                     })
                     .collect(Collectors.toList());
