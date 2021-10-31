@@ -1,6 +1,7 @@
 package com.nekromant.finance.commands;
 
 import com.nekromant.finance.contants.CallBackData;
+import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.models.FinanceClient;
 import com.nekromant.finance.repository.FinanceClientRepository;
@@ -46,12 +47,12 @@ public class CategoriesCommand extends FinanceManagerCommand {
 
             List<InlineKeyboardButton> buttons = categories.stream().map(v -> {
                         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton(v.getName());
-                            inlineKeyboardButton.setCallbackData(CallBackData.GET_CATEGORY_INFO.getAlias() + " " + v.getId() + " " + chat.getId());
+                        inlineKeyboardButton.setCallbackData(CallBackData.GET_CATEGORY_INFO.getAlias() + " " + v.getId());
                         return inlineKeyboardButton;
                     })
                     .collect(Collectors.toList());
 
-            messageSender.sendMessageWithInlineButtons(chat.getId(), "Управление категориями",
+            messageSender.sendMessageWithInlineButtons(chat.getId(), Title.MANAGE_CATEGORIES.getText(),
                     buttons, 3);
         }
     }

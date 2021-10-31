@@ -3,10 +3,9 @@ package com.nekromant.finance.processor;
 import com.nekromant.finance.FinanceManagerBot;
 import com.nekromant.finance.contants.CallBackData;
 import com.nekromant.finance.contants.Command;
+import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
-import com.nekromant.finance.models.FinanceClient;
 import com.nekromant.finance.repository.CategoryRepository;
-import com.nekromant.finance.repository.FinanceClientRepository;
 import com.nekromant.finance.service.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,23 +33,26 @@ public class CategoriesProcessor implements CallBackProcessor {
     public void process(Update update) throws TelegramApiException {
         String data = update.getCallbackQuery().getData();
         FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
-        bot.execute(new DeleteMessage(data.split(" ")[2], update.getCallbackQuery().getMessage().getMessageId()));
+        bot.execute(new DeleteMessage(update.getMessage().getChatId().toString(), update.getCallbackQuery().getMessage().getMessageId()));
         List<InlineKeyboardButton> buttons = new ArrayList<>();
 
         InlineKeyboardButton keywordsButton = new InlineKeyboardButton();
-        keywordsButton.setText("Ключевые слова");
-        keywordsButton.setCallbackData("!get_keywords_info " + Long.parseLong(data.split(" ")[1]));
+        keywordsButton.setText(Title.MANAGE_CATEGORIES.getText());
+        keywordsButton.setCallbackData(CallBackData.GET_KEYWORDS.getAlias() + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton editNameButton = new InlineKeyboardButton();
-        editNameButton.setText("Изменить название");
-        editNameButton.setCallbackData("!edit_name " + Long.parseLong(data.split(" ")[1]));
+        editNameButton.setText(Title.EDIT_NAME.getText());
+        editNameButton.setCallbackData(CallBackData.EDIT_NAME_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton deleteButton = new InlineKeyboardButton();
-        deleteButton.setText("Удалить категорию");
-        deleteButton.setCallbackData("!delete_category " + Long.parseLong(data.split(" ")[1]));
+        deleteButton.setText(Title.DELETE_CATEGORY.getText());
+        deleteButton.setCallbackData(CallBackData.DELETE_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton previousButton = new InlineKeyboardButton();
-        previousButton.setText("Назад");
+        previousButton.setText(Title.BACK_TO_CATEGORIES.getText());
+
+        //TODO  добавить callbackData на back button
+
         previousButton.setCallbackData(Command.CATEGORIES.getAlias());
 
         buttons.add(keywordsButton);
@@ -60,7 +62,7 @@ public class CategoriesProcessor implements CallBackProcessor {
 
         Optional<Category> optionalCategory = categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
         if (optionalCategory.isPresent()) {
-            messageSender.sendMessageWithInlineButtons(Long.parseLong(data.split(" ")[2]),
+            messageSender.sendMessageWithInlineButtons(update.getMessage().getChatId(),
                     "Выбранная категория: " + optionalCategory.get().getName(),
                     buttons, 1);
         }
@@ -68,6 +70,6 @@ public class CategoriesProcessor implements CallBackProcessor {
 
     @Override
     public String getPrefix() {
-        return "!get_category_info";
+        return CallBackData.GET_CATEGORY_INFO.getAlias();
     }
 }
