@@ -1,5 +1,6 @@
 package com.nekromant.finance.processor;
 
+import com.nekromant.finance.contants.CallBackData;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.repository.CategoryRepository;
 import com.nekromant.finance.service.MessageSender;
@@ -29,6 +30,6 @@ public class KeywordsProcessor implements CallBackProcessor {
 
     @Override
     public String getPrefix() {
-        return "!get_keywords_info";
+        return CallBackData.GET_KEYWORDS.getAlias();
     }
 }
