@@ -50,9 +50,6 @@ public class CategoriesProcessor implements CallBackProcessor {
 
         InlineKeyboardButton previousButton = new InlineKeyboardButton();
         previousButton.setText(Title.BACK_TO_CATEGORIES.getText());
-
-        //TODO  добавить callbackData на back button
-
         previousButton.setCallbackData(Command.CATEGORIES.getAlias());
 
         buttons.add(keywordsButton);
