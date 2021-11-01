@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendInvoice;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.stickers.AddStickerToSet;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -48,10 +49,10 @@ public class MessageSender {
         bot.execute(sendInvoice);
     }
 
-    public void sendMessageWithInlineButtons(Long chatId, List<InlineKeyboardButton> list, int rowNumbers) throws TelegramApiException {
+    public void sendMessageWithInlineButtons(Long chatId, String messageText, List<InlineKeyboardButton> list, int rowNumbers) throws TelegramApiException {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
-        message.setText("Управление категориями");
+        message.setText(messageText);
         List<InlineKeyboardButton> tempList = new ArrayList<>();
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
@@ -67,5 +68,8 @@ public class MessageSender {
         message.setReplyMarkup(inlineKeyboardMarkup);
         FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
         bot.execute(message);
+
+
     }
+
 }

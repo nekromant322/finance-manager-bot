@@ -1,27 +1,23 @@
 package com.nekromant.finance.commands;
 
-import com.nekromant.finance.contants.CallBackData;
+import com.nekromant.finance.contants.CallBackPrefix;
+import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.models.FinanceClient;
 import com.nekromant.finance.repository.FinanceClientRepository;
 import com.nekromant.finance.service.MessageSender;
 import lombok.SneakyThrows;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
 
 import static com.nekromant.finance.contants.Command.CATEGORIES;
 
@@ -51,12 +47,12 @@ public class CategoriesCommand extends FinanceManagerCommand {
 
             List<InlineKeyboardButton> buttons = categories.stream().map(v -> {
                         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton(v.getName());
-                        inlineKeyboardButton.setCallbackData(CallBackData.GET_CATEGORY_INFO.getAlias() + v.getId());
+                        inlineKeyboardButton.setCallbackData(CallBackPrefix.GET_CATEGORY_INFO.getAlias() + " " + v.getId());
                         return inlineKeyboardButton;
                     })
                     .collect(Collectors.toList());
 
-            messageSender.sendMessageWithInlineButtons(chat.getId(),
+            messageSender.sendMessageWithInlineButtons(chat.getId(), Title.MANAGE_CATEGORIES.getText(),
                     buttons, 3);
         }
     }
