@@ -1,7 +1,7 @@
 package com.nekromant.finance.processor;
 
 import com.nekromant.finance.FinanceManagerBot;
-import com.nekromant.finance.contants.CallBackData;
+import com.nekromant.finance.contants.CallBackPrefix;
 import com.nekromant.finance.contants.Command;
 import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
@@ -38,15 +38,15 @@ public class CategoriesProcessor implements CallBackProcessor {
 
         InlineKeyboardButton keywordsButton = new InlineKeyboardButton();
         keywordsButton.setText(Title.MANAGE_CATEGORIES.getText());
-        keywordsButton.setCallbackData(CallBackData.GET_KEYWORDS.getAlias() + Long.parseLong(data.split(" ")[1]));
+        keywordsButton.setCallbackData(CallBackPrefix.GET_KEYWORDS.getAlias() + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton editNameButton = new InlineKeyboardButton();
         editNameButton.setText(Title.EDIT_NAME.getText());
-        editNameButton.setCallbackData(CallBackData.EDIT_NAME_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
+        editNameButton.setCallbackData(CallBackPrefix.EDIT_NAME_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton deleteButton = new InlineKeyboardButton();
         deleteButton.setText(Title.DELETE_CATEGORY.getText());
-        deleteButton.setCallbackData(CallBackData.DELETE_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
+        deleteButton.setCallbackData(CallBackPrefix.DELETE_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton previousButton = new InlineKeyboardButton();
         previousButton.setText(Title.BACK_TO_CATEGORIES.getText());
@@ -67,6 +67,6 @@ public class CategoriesProcessor implements CallBackProcessor {
 
     @Override
     public String getPrefix() {
-        return CallBackData.GET_CATEGORY_INFO.getAlias();
+        return CallBackPrefix.GET_CATEGORY_INFO.getAlias();
     }
 }

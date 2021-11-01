@@ -49,7 +49,7 @@ public class MessageSender {
         bot.execute(sendInvoice);
     }
 
-    public void sendMessageWithInlineButtons(Long chatId,String messageText, List<InlineKeyboardButton> list, int rowNumbers) throws TelegramApiException {
+    public void sendMessageWithInlineButtons(Long chatId, String messageText, List<InlineKeyboardButton> list, int rowNumbers) throws TelegramApiException {
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
         message.setText(messageText);
