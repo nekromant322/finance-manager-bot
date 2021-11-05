@@ -7,10 +7,10 @@ import com.nekromant.finance.service.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 import java.util.Optional;
+
 @Component
 public class KeywordsProcessor implements CallBackProcessor {
     @Autowired
@@ -19,7 +19,7 @@ public class KeywordsProcessor implements CallBackProcessor {
     private MessageSender messageSender;
 
     @Override
-    public void process(Update update)  {
+    public void process(Update update) {
         String data = update.getCallbackQuery().getData();
         Optional<Category> optionalCategory = categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
         if (optionalCategory.isPresent()) {

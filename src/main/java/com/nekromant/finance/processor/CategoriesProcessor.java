@@ -15,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,20 +32,20 @@ public class CategoriesProcessor implements CallBackProcessor {
     public void process(Update update) throws TelegramApiException {
         String data = update.getCallbackQuery().getData();
         FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
-        bot.execute(new DeleteMessage(update.getMessage().getChatId().toString(), update.getCallbackQuery().getMessage().getMessageId()));
+        bot.execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(), update.getCallbackQuery().getMessage().getMessageId()));
         List<InlineKeyboardButton> buttons = new ArrayList<>();
 
         InlineKeyboardButton keywordsButton = new InlineKeyboardButton();
-        keywordsButton.setText(Title.MANAGE_CATEGORIES.getText());
-        keywordsButton.setCallbackData(CallBackPrefix.GET_KEYWORDS.getAlias() + Long.parseLong(data.split(" ")[1]));
+        keywordsButton.setText(Title.KEYWORDS.getText());
+        keywordsButton.setCallbackData(CallBackPrefix.GET_KEYWORDS.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton editNameButton = new InlineKeyboardButton();
         editNameButton.setText(Title.EDIT_NAME.getText());
-        editNameButton.setCallbackData(CallBackPrefix.EDIT_NAME_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
+        editNameButton.setCallbackData(CallBackPrefix.EDIT_NAME_CATEGORY.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton deleteButton = new InlineKeyboardButton();
         deleteButton.setText(Title.DELETE_CATEGORY.getText());
-        deleteButton.setCallbackData(CallBackPrefix.DELETE_CATEGORY.getAlias() + Long.parseLong(data.split(" ")[1]));
+        deleteButton.setCallbackData(CallBackPrefix.DELETE_CATEGORY.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton previousButton = new InlineKeyboardButton();
         previousButton.setText(Title.BACK_TO_CATEGORIES.getText());
@@ -59,7 +58,7 @@ public class CategoriesProcessor implements CallBackProcessor {
 
         Optional<Category> optionalCategory = categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
         if (optionalCategory.isPresent()) {
-            messageSender.sendMessageWithInlineButtons(update.getMessage().getChatId(),
+            messageSender.sendMessageWithInlineButtons(update.getCallbackQuery().getMessage().getChatId(),
                     "Выбранная категория: " + optionalCategory.get().getName(),
                     buttons, 1);
         }
