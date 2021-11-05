@@ -52,6 +52,10 @@ public class CategoriesCommand extends FinanceManagerCommand {
                     })
                     .collect(Collectors.toList());
 
+            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton(Title.ADD_CATEGORY.getText());
+            inlineKeyboardButton.setCallbackData(CallBackPrefix.ADD_CATEGORY.getAlias());
+            buttons.add(inlineKeyboardButton);
+
             messageSender.sendMessageWithInlineButtons(chat.getId(), Title.MANAGE_CATEGORIES.getText(),
                     buttons, 3);
         }
