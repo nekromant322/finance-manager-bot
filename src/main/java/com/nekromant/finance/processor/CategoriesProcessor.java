@@ -2,7 +2,6 @@ package com.nekromant.finance.processor;
 
 import com.nekromant.finance.FinanceManagerBot;
 import com.nekromant.finance.contants.CallBackPrefix;
-import com.nekromant.finance.contants.Command;
 import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.repository.CategoryRepository;
@@ -48,8 +47,8 @@ public class CategoriesProcessor implements CallBackProcessor {
         deleteButton.setCallbackData(CallBackPrefix.DELETE_CATEGORY.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
         InlineKeyboardButton previousButton = new InlineKeyboardButton();
-        previousButton.setText(Title.BACK_TO_CATEGORIES.getText());
-        previousButton.setCallbackData(Command.CATEGORIES.getAlias());
+        previousButton.setText(Title.BACK.getText());
+        previousButton.setCallbackData(CallBackPrefix.PREVIOUS.getAlias());
 
         buttons.add(keywordsButton);
         buttons.add(editNameButton);

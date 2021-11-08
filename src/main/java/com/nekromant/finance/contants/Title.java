@@ -8,7 +8,8 @@ public enum Title {
     ADD_CATEGORY(Character.toString('➕')),
     EDIT_NAME("Изменить название"),
     DELETE_CATEGORY("Удалить категорию"),
-    BACK_TO_CATEGORIES("Назад");
+    EDIT_KEYWORDS("Редактировать ключевые слова"),
+    BACK("Назад");
     @Getter
     private final String text;
 
