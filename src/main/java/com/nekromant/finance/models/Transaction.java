@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     @Column(name = "comment")
     private String commment;
@@ -28,7 +28,7 @@ public class Transaction {
 
     }
 
-    public Transaction(UUID id, String commment, Double sum, Category category) {
+    public Transaction(Long id, String commment, Double sum, Category category) {
         this.id = id;
         this.commment = commment;
         this.sum = sum;

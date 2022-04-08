@@ -42,7 +42,7 @@ public class MessageSender {
     @SneakyThrows
     public void sendInvoice(String chatId, String payload, String providerToken) {
         SendInvoice sendInvoice = new SendInvoice();
-        sendInvoice.setChatId(Integer.valueOf(chatId));
+        sendInvoice.setChatId(chatId);
         sendInvoice.setPayload(payload);
         sendInvoice.setProviderToken(providerToken);
         FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);

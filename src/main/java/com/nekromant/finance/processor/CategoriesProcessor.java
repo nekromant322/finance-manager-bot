@@ -2,6 +2,7 @@ package com.nekromant.finance.processor;
 
 import com.nekromant.finance.FinanceManagerBot;
 import com.nekromant.finance.contants.CallBackPrefix;
+import com.nekromant.finance.contants.Command;
 import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.repository.CategoryRepository;
@@ -46,20 +47,17 @@ public class CategoriesProcessor implements CallBackProcessor {
         deleteButton.setText(Title.DELETE_CATEGORY.getText());
         deleteButton.setCallbackData(CallBackPrefix.DELETE_CATEGORY.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
-        InlineKeyboardButton previousButton = new InlineKeyboardButton();
-        previousButton.setText(Title.BACK.getText());
-        previousButton.setCallbackData(CallBackPrefix.PREVIOUS.getAlias());
-
         buttons.add(keywordsButton);
         buttons.add(editNameButton);
         buttons.add(deleteButton);
-        buttons.add(previousButton);
 
         Optional<Category> optionalCategory = categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
         if (optionalCategory.isPresent()) {
             messageSender.sendMessageWithInlineButtons(update.getCallbackQuery().getMessage().getChatId(),
-                    "Выбранная категория: " + optionalCategory.get().getName(),
-                    buttons, 1);
+                    "Выбранная категория: " + optionalCategory.get().getName(), buttons, 1);
+
+            messageSender.sendMessage("Для возврата к списку категорий введите команду /categories",
+                    String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
         }
     }
 

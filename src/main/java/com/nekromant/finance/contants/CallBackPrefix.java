@@ -5,7 +5,6 @@ public enum CallBackPrefix {
     GET_KEYWORDS("!get_keywords_info"),
     EDIT_NAME_CATEGORY("!edit_name"),
     ADD_CATEGORY("!add_category"),
-    PREVIOUS("!previous_action"),
     EDIT_KEYWORDS("!edit_keywords"),
     DELETE_CATEGORY("!delete_category");
 

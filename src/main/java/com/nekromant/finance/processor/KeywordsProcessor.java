@@ -43,7 +43,7 @@ public class KeywordsProcessor implements CallBackProcessor {
 
         InlineKeyboardButton previousButton = new InlineKeyboardButton();
         previousButton.setText(Title.BACK.getText());
-        previousButton.setCallbackData(CallBackPrefix.PREVIOUS.getAlias());
+         previousButton.setCallbackData(CallBackPrefix.GET_CATEGORY_INFO.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
         buttons.add(editKeywordsButton);
         buttons.add(previousButton);
