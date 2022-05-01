@@ -35,11 +35,9 @@ public class StartCommand extends FinanceManagerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        //TODO убрать семпловые кнопки
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
         message.setText("Добро пожаловать");
-
 
         Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chat.getId());
         if (optionalFinanceClient.isEmpty()) {

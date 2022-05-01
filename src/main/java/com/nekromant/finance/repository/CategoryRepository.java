@@ -20,4 +20,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "delete from clients_categories where categories_id = :categoryId", nativeQuery = true)
     void deleteCategoryById(@Param("categoryId") Long id);
 
+    Category findByName(String name);
+
 }

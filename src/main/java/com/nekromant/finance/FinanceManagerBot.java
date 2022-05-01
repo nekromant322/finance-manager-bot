@@ -3,7 +3,12 @@ package com.nekromant.finance;
 import com.nekromant.finance.commands.FinanceManagerCommand;
 import com.nekromant.finance.contants.Errors;
 import com.nekromant.finance.exception.CommandExecuteException;
+import com.nekromant.finance.models.Category;
+import com.nekromant.finance.models.FinanceClient;
 import com.nekromant.finance.processor.CallBackProcessor;
+import com.nekromant.finance.repository.CategoryRepository;
+import com.nekromant.finance.repository.FinanceClientRepository;
+import com.nekromant.finance.service.MessageSender;
 import com.nekromant.finance.service.NonCommandInputService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +36,13 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
 
     private final NonCommandInputService nonCommandInputService;
 
+    @Autowired
+    private FinanceClientRepository clientRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private MessageSender messageSender;
+
     private final HashMap<String, CallBackProcessor> callBackProcessors = new HashMap<>();
 
     @Autowired
@@ -54,6 +66,28 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
         try {
             if (update.hasMessage()) {
                 Message message = update.getMessage();
+                String text = message.getText();
+                if (text.contains("rename")) {
+                    Long chatId = update.getMessage().getChatId();
+                    FinanceClient financeClient = clientRepository.findByChatId(chatId);
+                    List<Category> categories = financeClient.getCategories();
+                    Category category = null;
+                    for (Category value : categories) {
+                        if (text.contains(value.getName())) {
+                            text = text.replace(value.getName(), "");
+                            category = categoryRepository.findByName(value.getName());
+                            break;
+                        }
+                    }
+                    if (category != null) {
+                        messageSender.sendMessage("Категория с таким именем не найдена, попробуйте еще раз",
+                                String.valueOf(update.getMessage().getChatId()));
+                    }
+                    String newName = text.replace("/rename", "");
+                    category.setName(newName);
+                    categoryRepository.save(category);
+                    return;
+                }
                 nonCommandInputService.processNonCommandInput(message.getText(), message.getChatId());
             }
             if (update.hasCallbackQuery()) {
