@@ -1,6 +1,5 @@
 package com.nekromant.finance.processor;
 
-
 import com.nekromant.finance.FinanceManagerBot;
 import com.nekromant.finance.contants.CallBackPrefix;
 import com.nekromant.finance.repository.CategoryRepository;
@@ -17,26 +16,29 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class EditNameCategoryProcessor implements CallBackProcessor {
 
-    @Autowired
-    private MessageSender messageSender;
-    @Autowired
-    private ApplicationContext applicationContext;
+  @Autowired private MessageSender messageSender;
+  @Autowired private ApplicationContext applicationContext;
 
-    @Override
-    public void process(Update update) throws TelegramApiException {
-        FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
-        bot.execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(), update.getCallbackQuery().getMessage().getMessageId()));
-        bot.execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(), update.getCallbackQuery().getMessage().getMessageId()+1));
+  @Override
+  public void process(Update update) throws TelegramApiException {
+    FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
+    bot.execute(
+        new DeleteMessage(
+            update.getCallbackQuery().getMessage().getChatId().toString(),
+            update.getCallbackQuery().getMessage().getMessageId()));
+    bot.execute(
+        new DeleteMessage(
+            update.getCallbackQuery().getMessage().getChatId().toString(),
+            update.getCallbackQuery().getMessage().getMessageId() + 1));
 
-        messageSender.sendMessage("Для переименования названия категории введите команду в формате:" +
-                        " /rename {название категории} {новое название}",
-                String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
+    messageSender.sendMessage(
+        "Для переименования названия категории введите команду в формате:"
+            + " /rename {название категории} {новое название}",
+        String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
+  }
 
-
-    }
-
-    @Override
-    public String getPrefix() {
-        return CallBackPrefix.EDIT_NAME_CATEGORY.getAlias();
-    }
+  @Override
+  public String getPrefix() {
+    return CallBackPrefix.EDIT_NAME_CATEGORY.getAlias();
+  }
 }

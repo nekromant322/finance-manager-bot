@@ -18,44 +18,50 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Component
 public class KeywordsProcessor implements CallBackProcessor {
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private MessageSender messageSender;
-    @Autowired
-    private ApplicationContext applicationContext;
+  @Autowired private CategoryRepository categoryRepository;
+  @Autowired private MessageSender messageSender;
+  @Autowired private ApplicationContext applicationContext;
 
-    @Override
-    public void process(Update update) throws TelegramApiException {
-        String data = update.getCallbackQuery().getData();
-        Optional<Category> optionalCategory = categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
+  @Override
+  public void process(Update update) throws TelegramApiException {
+    String data = update.getCallbackQuery().getData();
+    Optional<Category> optionalCategory =
+        categoryRepository.findById(Long.parseLong(data.split(" ")[1]));
 
-        FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
-        bot.execute(new DeleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(), update.getCallbackQuery().getMessage().getMessageId()));
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
+    FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);
+    bot.execute(
+        new DeleteMessage(
+            update.getCallbackQuery().getMessage().getChatId().toString(),
+            update.getCallbackQuery().getMessage().getMessageId()));
+    List<InlineKeyboardButton> buttons = new ArrayList<>();
 
-        InlineKeyboardButton editKeywordsButton = new InlineKeyboardButton();
-        editKeywordsButton.setText(Title.EDIT_KEYWORDS.getText());
-        editKeywordsButton.setCallbackData(CallBackPrefix.EDIT_KEYWORDS.getAlias());
+    InlineKeyboardButton editKeywordsButton = new InlineKeyboardButton();
+    editKeywordsButton.setText(Title.EDIT_KEYWORDS.getText());
+    editKeywordsButton.setCallbackData(CallBackPrefix.EDIT_KEYWORDS.getAlias());
 
-        InlineKeyboardButton previousButton = new InlineKeyboardButton();
-        previousButton.setText(Title.BACK.getText());
-         previousButton.setCallbackData(CallBackPrefix.GET_CATEGORY_INFO.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
+    InlineKeyboardButton previousButton = new InlineKeyboardButton();
+    previousButton.setText(Title.BACK.getText());
+    previousButton.setCallbackData(
+        CallBackPrefix.GET_CATEGORY_INFO.getAlias() + " " + Long.parseLong(data.split(" ")[1]));
 
-        buttons.add(editKeywordsButton);
-        buttons.add(previousButton);
+    buttons.add(editKeywordsButton);
+    buttons.add(previousButton);
 
-        if (optionalCategory.isPresent()) {
-            List<String> keywords = categoryRepository.findKeywordsByCategoryId(optionalCategory.get().getId());
-            messageSender.sendMessageWithInlineButtons(update.getCallbackQuery().getMessage().getChatId(), keywords.toString().replace("[", "").replace("]", ""), buttons, 1);
-        }
+    if (optionalCategory.isPresent()) {
+      List<String> keywords =
+          categoryRepository.findKeywordsByCategoryId(optionalCategory.get().getId());
+      messageSender.sendMessageWithInlineButtons(
+          update.getCallbackQuery().getMessage().getChatId(),
+          keywords.toString().replace("[", "").replace("]", ""),
+          buttons,
+          1);
     }
+  }
 
-    @Override
-    public String getPrefix() {
-        return CallBackPrefix.GET_KEYWORDS.getAlias();
-    }
+  @Override
+  public String getPrefix() {
+    return CallBackPrefix.GET_KEYWORDS.getAlias();
+  }
 }

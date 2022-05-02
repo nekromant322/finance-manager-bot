@@ -12,14 +12,17 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    @Query(value = "select keywords from category_keywords where category_id = :categoryId", nativeQuery = true)
-    List<String> findKeywordsByCategoryId(@Param("categoryId") Long categoryId);
+  @Query(
+      value = "select keywords from category_keywords where category_id = :categoryId",
+      nativeQuery = true)
+  List<String> findKeywordsByCategoryId(@Param("categoryId") Long categoryId);
 
-    @Modifying
-    @Transactional
-    @Query(value = "delete from clients_categories where categories_id = :categoryId", nativeQuery = true)
-    void deleteCategoryById(@Param("categoryId") Long id);
+  @Modifying
+  @Transactional
+  @Query(
+      value = "delete from clients_categories where categories_id = :categoryId",
+      nativeQuery = true)
+  void deleteCategoryById(@Param("categoryId") Long id);
 
-    Category findByName(String name);
-
+  Category findByName(String name);
 }

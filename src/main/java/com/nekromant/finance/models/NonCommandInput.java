@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class NonCommandInput {
-    private double money;
-    private String text;
+  private double money;
+  private String text;
 }
