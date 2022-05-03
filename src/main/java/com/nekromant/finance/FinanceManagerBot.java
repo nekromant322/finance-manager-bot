@@ -24,6 +24,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -74,11 +75,13 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
         }
         if (text.contains("add_category")) {
           // добавить категорию
-          addCategory(update,text);
+          addCategory(update, text);
           return;
         }
         if (text.contains("add_keywords")) {
           // добавить ключевые слова
+          addKeyWords(update, text);
+          return;
         }
         if (text.contains("delete_keyword")) {
           // удалить ключевое слово из категории
@@ -161,5 +164,28 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     categories.add(categoryRepository.save(category));
     financeClient.setCategories(categories);
     clientRepository.save(financeClient);
+    messageSender.sendMessage(
+        String.format("Категория %s добавлена ", category.getName()),
+        String.valueOf(update.getMessage().getChatId()));
+  }
+
+  private void addKeyWords(Update update, String text) {
+    // add_keywords categoryName keyword0, keyword1, keyword2
+    Long chatId = update.getMessage().getChatId();
+    FinanceClient financeClient = clientRepository.findByChatId(chatId);
+    List<Category> categories = financeClient.getCategories();
+    Category category = null;
+    for (Category item : categories) {
+      if (text.contains(item.getName())) {
+        category = item;
+        text = (text.replace("/add_keywords", "")).replace(item.getName(), "");
+      }
+    }
+    List<String> keywords = List.of(text.replace(" ", "").split(","));
+    keywords = keywords.stream().distinct().collect(Collectors.toList());
+    List<String> oldKeyWords = categoryRepository.findKeywordsByCategoryId(category.getId());
+    oldKeyWords.addAll(keywords);
+    category.setKeywords(oldKeyWords.stream().distinct().collect(Collectors.toList()));
+    categoryRepository.save(category);
   }
 }
