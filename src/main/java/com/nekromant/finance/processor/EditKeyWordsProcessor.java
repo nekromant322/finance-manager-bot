@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @RequiredArgsConstructor
-public class EditNameCategoryProcessor implements CallBackProcessor {
+public class EditKeyWordsProcessor implements CallBackProcessor {
 
   private final MessageSender messageSender;
   private final ApplicationContext applicationContext;
@@ -24,19 +24,13 @@ public class EditNameCategoryProcessor implements CallBackProcessor {
         new DeleteMessage(
             update.getCallbackQuery().getMessage().getChatId().toString(),
             update.getCallbackQuery().getMessage().getMessageId()));
-    bot.execute(
-        new DeleteMessage(
-            update.getCallbackQuery().getMessage().getChatId().toString(),
-            update.getCallbackQuery().getMessage().getMessageId() + 1));
-
     messageSender.sendMessage(
-        "Для переименования названия категории введите команду в формате:"
-            + " /rename {название категории} {новое название}",
+        "Для добавления ключевых слов необходимо ввести команду : /add_keywords {Название категории} {Ключевое слово,..}",
         String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
   }
 
   @Override
   public String getPrefix() {
-    return CallBackPrefix.EDIT_NAME_CATEGORY.getAlias();
+    return CallBackPrefix.EDIT_KEYWORDS.getAlias();
   }
 }

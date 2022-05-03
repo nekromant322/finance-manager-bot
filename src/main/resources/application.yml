@@ -1,9 +1,9 @@
 bot:
-  name: ${TELEGRAM_BOT_NAME}
-  token: ${TELEGRAM_BOT_TOKEN}
+  name: ${TELEGRAM_BOT_NAME:finance-manager}
+  token: ${TELEGRAM_BOT_TOKEN:5105426501:AAE4AgIsDfYA8wesDwsMKuk3UJ851Xq8XBI}
 
 owner:
-  userName: Marandyuk_Anatolii
+  userName: Vlad
 
 server:
   port: ${PORT:8080}
@@ -16,7 +16,7 @@ spring:
   datasource:
     password: ${PROD_POSTGRE_PASSWORD:postgres}
     username: ${PROD_POSTGRE_USERNAME:postgres}
-    url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432}
+    url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432/}
     driver-class-name: org.postgresql.Driver
 
 

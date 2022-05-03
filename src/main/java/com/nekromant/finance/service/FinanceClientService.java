@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FinanceClientService {
-    @Autowired
-    private FinanceClientRepository financeClientRepository;
+  @Autowired private FinanceClientRepository financeClientRepository;
 
-    public void saveUser(FinanceClient financeClient) {
-        financeClientRepository.save(financeClient);
-    }
+  public void saveUser(FinanceClient financeClient) {
+    financeClientRepository.save(financeClient);
+  }
 }

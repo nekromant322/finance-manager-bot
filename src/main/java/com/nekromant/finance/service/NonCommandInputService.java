@@ -14,30 +14,40 @@ import org.springframework.stereotype.Service;
 @Service
 public class NonCommandInputService {
 
-    private final InputParser inputParser;
-    private final CategorySearcher categorySearcher;
-    private final FinanceClientRepository financeClientRepository;
-    private final MessageSender messageSender;
+  private final InputParser inputParser;
+  private final CategorySearcher categorySearcher;
+  private final FinanceClientRepository financeClientRepository;
+  private final MessageSender messageSender;
 
-    public void processNonCommandInput(String rawInput, long chatId) {
-        NonCommandInput nonCommandInput = inputParser.parseNonCommandInput(rawInput);
+  public void processNonCommandInput(String rawInput, long chatId) {
+    NonCommandInput nonCommandInput = inputParser.parseNonCommandInput(rawInput);
 
-        FinanceClient financeClient = financeClientRepository.findById(chatId)
-                .orElseThrow(() -> new CommandExecuteException(Errors.USER_NOT_FOUND));
+    FinanceClient financeClient =
+        financeClientRepository
+            .findById(chatId)
+            .orElseThrow(() -> new CommandExecuteException(Errors.USER_NOT_FOUND));
 
-
-        financeClient.getCategories().stream()
-                .filter(c -> c.getName().equals(categorySearcher.searchCategory(financeClient.getCategories(), nonCommandInput.getText())
-                        .orElse(new Category()).getName()))
-                .forEach(category -> financeClient.getTransactionsHistory().add(
+    financeClient.getCategories().stream()
+        .filter(
+            c ->
+                c.getName()
+                    .equals(
+                        categorySearcher
+                            .searchCategory(
+                                financeClient.getCategories(), nonCommandInput.getText())
+                            .orElse(new Category())
+                            .getName()))
+        .forEach(
+            category ->
+                financeClient
+                    .getTransactionsHistory()
+                    .add(
                         Transaction.builder()
-                                .category(category)
-                                .commment(nonCommandInput.getText())
-                                .sum(nonCommandInput.getMoney())
-                                .build()
-                ));
-        messageSender.sendMessage("Твоя залупа записана в расходы", String.valueOf(chatId));
-        //TODO отправить текст, что все заебись, т.к. не выпало исключения
-    }
-
+                            .category(category)
+                            .commment(nonCommandInput.getText())
+                            .sum(nonCommandInput.getMoney())
+                            .build()));
+    messageSender.sendMessage("Твоя залупа записана в расходы", String.valueOf(chatId));
+    // TODO отправить текст, что все заебись, т.к. не выпало исключения
+  }
 }

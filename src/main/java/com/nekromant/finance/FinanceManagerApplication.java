@@ -7,21 +7,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-
 @SpringBootApplication
-@PropertySource({
-        "classpath:application.yml"
-})
-@EnableConfigurationProperties({
-        DefaultCategoriesProperties.class
-})
+@PropertySource({"classpath:application.yml"})
+@EnableConfigurationProperties({DefaultCategoriesProperties.class})
 @EnableScheduling
 public class FinanceManagerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FinanceManagerApplication.class, args);
-    }
-
-
+  public static void main(String[] args) {
+    SpringApplication.run(FinanceManagerApplication.class, args);
+  }
 }
-
