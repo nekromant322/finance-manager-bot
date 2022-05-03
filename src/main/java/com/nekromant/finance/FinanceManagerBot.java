@@ -142,6 +142,7 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
       messageSender.sendMessage(
           "Категория с таким именем не найдена, попробуйте еще раз",
           String.valueOf(update.getMessage().getChatId()));
+      return;
     }
     String newName = text.replace("/rename", "");
     category.setName(newName);
@@ -180,6 +181,12 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
         category = item;
         text = (text.replace("/add_keywords", "")).replaceFirst(item.getName(), "");
       }
+    }
+    if (category == null) {
+      messageSender.sendMessage(
+              "Категория с таким именем не найдена, попробуйте еще раз",
+              String.valueOf(update.getMessage().getChatId()));
+      return;
     }
     List<String> keywords = List.of(text.replace(" ", "").split(","));
     keywords = keywords.stream().distinct().collect(Collectors.toList());
