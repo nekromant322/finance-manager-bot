@@ -53,11 +53,17 @@ public class KeywordsProcessor implements CallBackProcessor {
     if (optionalCategory.isPresent()) {
       List<String> keywords =
           categoryRepository.findKeywordsByCategoryId(optionalCategory.get().getId());
-      messageSender.sendMessageWithInlineButtons(
-          update.getCallbackQuery().getMessage().getChatId(),
-          keywords.toString().replace("[", "").replace("]", ""),
-          buttons,
-          1);
+      if (keywords.size() != 0) {
+        messageSender.sendMessageWithInlineButtons(
+            update.getCallbackQuery().getMessage().getChatId(),
+            keywords.toString().replace("[", "").replace("]", ""),
+            buttons,
+            1);
+      } else {
+        messageSender.sendMessage(
+            "Ключевых слов пока нет",
+            String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
+      }
     }
   }
 

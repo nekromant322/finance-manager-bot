@@ -5,6 +5,7 @@ import com.nekromant.finance.contants.Errors;
 import com.nekromant.finance.exception.CommandExecuteException;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.models.FinanceClient;
+import com.nekromant.finance.models.Type;
 import com.nekromant.finance.processor.CallBackProcessor;
 import com.nekromant.finance.repository.CategoryRepository;
 import com.nekromant.finance.repository.FinanceClientRepository;
@@ -21,7 +22,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -37,6 +39,7 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
 
   @Autowired private FinanceClientRepository clientRepository;
   @Autowired private CategoryRepository categoryRepository;
+
   @Autowired private MessageSender messageSender;
 
   private final HashMap<String, CallBackProcessor> callBackProcessors = new HashMap<>();
@@ -65,26 +68,20 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
         Message message = update.getMessage();
         String text = message.getText();
         if (text.contains("rename")) {
-          Long chatId = update.getMessage().getChatId();
-          FinanceClient financeClient = clientRepository.findByChatId(chatId);
-          List<Category> categories = financeClient.getCategories();
-          Category category = null;
-          for (Category value : categories) {
-            if (text.contains(value.getName())) {
-              text = text.replace(value.getName(), "");
-              category = categoryRepository.findByName(value.getName());
-              break;
-            }
-          }
-          if (category != null) {
-            messageSender.sendMessage(
-                "Категория с таким именем не найдена, попробуйте еще раз",
-                String.valueOf(update.getMessage().getChatId()));
-          }
-          String newName = text.replace("/rename", "");
-          category.setName(newName);
-          categoryRepository.save(category);
+          // переименовать категорию
+          renameCategory(update, text);
           return;
+        }
+        if (text.contains("add_category")) {
+          // добавить категорию
+          addCategory(update,text);
+          return;
+        }
+        if (text.contains("add_keywords")) {
+          // добавить ключевые слова
+        }
+        if (text.contains("delete_keyword")) {
+          // удалить ключевое слово из категории
         }
         nonCommandInputService.processNonCommandInput(message.getText(), message.getChatId());
       }
@@ -122,5 +119,47 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     message.setText(text);
     message.setChatId(chatId);
     execute(message);
+  }
+
+  private void renameCategory(Update update, String text) {
+    Long chatId = update.getMessage().getChatId();
+    FinanceClient financeClient = clientRepository.findByChatId(chatId);
+    List<Category> categories = financeClient.getCategories();
+    String oldName = null;
+    Category category = null;
+    for (Category value : categories) {
+      if (text.contains(value.getName())) {
+        text = text.replace(value.getName(), "");
+        oldName = value.getName();
+        category = value;
+        break;
+      }
+    }
+    if (category == null) {
+      messageSender.sendMessage(
+          "Категория с таким именем не найдена, попробуйте еще раз",
+          String.valueOf(update.getMessage().getChatId()));
+    }
+    String newName = text.replace("/rename", "");
+    category.setName(newName);
+    categoryRepository.save(category);
+    messageSender.sendMessage(
+        String.format("Категория %s переименована в %s", oldName, newName),
+        String.valueOf(update.getMessage().getChatId()));
+  }
+
+  private void addCategory(Update update, String text) {
+    // add_category name type
+    Long chatId = update.getMessage().getChatId();
+    FinanceClient financeClient = clientRepository.findByChatId(chatId);
+    List<Category> categories = financeClient.getCategories();
+    String[] command = text.split(" ");
+    if (command.length != 3) {
+      throw new CommandExecuteException(Errors.COMMAND_FORMAT);
+    }
+    Category category = new Category(command[1], null, Type.valueOf(command[2]));
+    categories.add(categoryRepository.save(category));
+    financeClient.setCategories(categories);
+    clientRepository.save(financeClient);
   }
 }
