@@ -60,9 +60,11 @@ public class KeywordsProcessor implements CallBackProcessor {
             buttons,
             1);
       } else {
-        messageSender.sendMessage(
+        messageSender.sendMessageWithInlineButtons(
+            update.getCallbackQuery().getMessage().getChatId(),
             "Ключевых слов пока нет",
-            String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
+            buttons,
+            1);
       }
     }
   }
