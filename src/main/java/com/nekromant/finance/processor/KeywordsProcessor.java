@@ -6,7 +6,7 @@ import com.nekromant.finance.contants.Title;
 import com.nekromant.finance.models.Category;
 import com.nekromant.finance.repository.CategoryRepository;
 import com.nekromant.finance.service.MessageSender;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -19,10 +19,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class KeywordsProcessor implements CallBackProcessor {
-  @Autowired private CategoryRepository categoryRepository;
-  @Autowired private MessageSender messageSender;
-  @Autowired private ApplicationContext applicationContext;
+  private final CategoryRepository categoryRepository;
+  private final MessageSender messageSender;
+  private final ApplicationContext applicationContext;
 
   @Override
   public void process(Update update) throws TelegramApiException {

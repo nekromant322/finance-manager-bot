@@ -3,14 +3,15 @@ package com.nekromant.finance.processor;
 import com.nekromant.finance.contants.CallBackPrefix;
 import com.nekromant.finance.repository.CategoryRepository;
 import com.nekromant.finance.service.MessageSender;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
+@RequiredArgsConstructor
 public class DeleteCategoryProcessor implements CallBackProcessor {
-  @Autowired private CategoryRepository categoryRepository;
-  @Autowired MessageSender messageSender;
+  private final CategoryRepository categoryRepository;
+  private final MessageSender messageSender;
 
   @Override
   public void process(Update update) {
