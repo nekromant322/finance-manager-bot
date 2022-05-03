@@ -132,7 +132,7 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     Category category = null;
     for (Category value : categories) {
       if (text.contains(value.getName())) {
-        text = text.replace(value.getName(), "");
+        text = text.replaceFirst(value.getName(), "");
         oldName = value.getName();
         category = value;
         break;
@@ -178,7 +178,7 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     for (Category item : categories) {
       if (text.contains(item.getName())) {
         category = item;
-        text = (text.replace("/add_keywords", "")).replace(item.getName(), "");
+        text = (text.replace("/add_keywords", "")).replaceFirst(item.getName(), "");
       }
     }
     List<String> keywords = List.of(text.replace(" ", "").split(","));
