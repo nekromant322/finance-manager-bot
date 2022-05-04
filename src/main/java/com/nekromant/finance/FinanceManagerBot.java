@@ -189,9 +189,10 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
   private Category findCategory(Update update, String command, String text) {
     FinanceClient financeClient = clientRepository.findByChatId(update.getMessage().getChatId());
     List<Category> categories = financeClient.getCategories();
+    text = text.toLowerCase();
     Category category = null;
     for (Category item : categories) {
-      if (text.contains(item.getName())) {
+      if (text.contains(item.getName().toLowerCase())) {
         category = item;
         text = (text.replace(command, "")).replaceFirst(item.getName(), "");
       }
