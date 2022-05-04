@@ -7,7 +7,8 @@ public enum Errors {
   UNKNOWN_COMMAND("Не понимаю команду"),
   NOT_OWNER("Ты не владелец бота"),
   COMMAND_FORMAT("Неверный формат команды"),
-  USER_NOT_FOUND("Пользователь не найден");
+  USER_NOT_FOUND("Пользователь не найден"),
+  CATEGORY_NOT_FOUND("Категория не найдена");
 
   @Getter private final String text;
 

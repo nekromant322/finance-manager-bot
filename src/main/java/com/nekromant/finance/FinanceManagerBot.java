@@ -85,6 +85,7 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
         }
         if (text.contains("delete_keyword")) {
           // удалить ключевое слово из категории
+          deleteKeyWords(update, text);
         }
         nonCommandInputService.processNonCommandInput(message.getText(), message.getChatId());
       }
@@ -125,25 +126,8 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
   }
 
   private void renameCategory(Update update, String text) {
-    Long chatId = update.getMessage().getChatId();
-    FinanceClient financeClient = clientRepository.findByChatId(chatId);
-    List<Category> categories = financeClient.getCategories();
-    String oldName = null;
-    Category category = null;
-    for (Category value : categories) {
-      if (text.contains(value.getName())) {
-        text = text.replaceFirst(value.getName(), "");
-        oldName = value.getName();
-        category = value;
-        break;
-      }
-    }
-    if (category == null) {
-      messageSender.sendMessage(
-          "Категория с таким именем не найдена, попробуйте еще раз",
-          String.valueOf(update.getMessage().getChatId()));
-      return;
-    }
+    Category category = findCategory(update, "/rename", text);
+    String oldName = category.getName();
     String newName = text.replace("/rename", "");
     category.setName(newName);
     categoryRepository.save(category);
@@ -156,12 +140,15 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     // add_category name type
     Long chatId = update.getMessage().getChatId();
     FinanceClient financeClient = clientRepository.findByChatId(chatId);
+    if (financeClient == null) {
+      throw new CommandExecuteException(Errors.USER_NOT_FOUND);
+    }
     List<Category> categories = financeClient.getCategories();
     String[] command = text.split(" ");
     if (command.length != 3) {
       throw new CommandExecuteException(Errors.COMMAND_FORMAT);
     }
-    Category category = new Category(command[1], null, Type.valueOf(command[2]));
+    Category category = new Category(command[1].replace(" ", ""), null, Type.valueOf(command[2]));
     categories.add(categoryRepository.save(category));
     financeClient.setCategories(categories);
     clientRepository.save(financeClient);
@@ -172,27 +159,49 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
 
   private void addKeyWords(Update update, String text) {
     // add_keywords categoryName keyword0, keyword1, keyword2
-    Long chatId = update.getMessage().getChatId();
-    FinanceClient financeClient = clientRepository.findByChatId(chatId);
-    List<Category> categories = financeClient.getCategories();
-    Category category = null;
-    for (Category item : categories) {
-      if (text.contains(item.getName())) {
-        category = item;
-        text = (text.replace("/add_keywords", "")).replaceFirst(item.getName(), "");
-      }
-    }
-    if (category == null) {
-      messageSender.sendMessage(
-              "Категория с таким именем не найдена, попробуйте еще раз",
-              String.valueOf(update.getMessage().getChatId()));
-      return;
-    }
+    Category category = findCategory(update, "/add_keywords", text);
+
     List<String> keywords = List.of(text.replace(" ", "").split(","));
     keywords = keywords.stream().distinct().collect(Collectors.toList());
     List<String> oldKeyWords = categoryRepository.findKeywordsByCategoryId(category.getId());
     oldKeyWords.addAll(keywords);
     category.setKeywords(oldKeyWords.stream().distinct().collect(Collectors.toList()));
     categoryRepository.save(category);
+    messageSender.sendMessage(
+        "Ключевые слова были успешно добавлены", String.valueOf(update.getMessage().getChatId()));
+  }
+
+  private void deleteKeyWords(Update update, String text) {
+    // delete_keywords categoryName keyWord0,keyWord1, ...
+    Category category = findCategory(update, "/delete_keywords", text);
+
+    List<String> unusedKeyWords = List.of(text.replace(" ", "").split(","));
+    unusedKeyWords = unusedKeyWords.stream().distinct().collect(Collectors.toList());
+
+    List<String> keyWords = categoryRepository.findKeywordsByCategoryId(category.getId());
+    keyWords.removeIf(unusedKeyWords::contains);
+    category.setKeywords(keyWords);
+    categoryRepository.save(category);
+    messageSender.sendMessage(
+        "Ключевые слова были успешно удалены", String.valueOf(update.getMessage().getChatId()));
+  }
+
+  private Category findCategory(Update update, String command, String text) {
+    FinanceClient financeClient = clientRepository.findByChatId(update.getMessage().getChatId());
+    List<Category> categories = financeClient.getCategories();
+    Category category = null;
+    for (Category item : categories) {
+      if (text.contains(item.getName())) {
+        category = item;
+        text = (text.replace(command, "")).replaceFirst(item.getName(), "");
+      }
+    }
+    if (category == null) {
+      messageSender.sendMessage(
+          "Категория с таким именем не найдена, попробуйте еще раз",
+          String.valueOf(update.getMessage().getChatId()));
+      throw new CommandExecuteException(Errors.CATEGORY_NOT_FOUND);
+    }
+    return category;
   }
 }
