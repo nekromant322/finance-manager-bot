@@ -1,13 +1,18 @@
 package com.nekromant.finance.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Builder
 @Data
 @Table(name = "transactions")
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Transaction {
   @Id
@@ -22,12 +27,6 @@ public class Transaction {
 
   @ManyToOne private Category category;
 
-  public Transaction() {}
-
-  public Transaction(Long id, String commment, Double sum, Category category) {
-    this.id = id;
-    this.commment = commment;
-    this.sum = sum;
-    this.category = category;
-  }
+  @Column(name = "creation_date")
+  private ZonedDateTime creationDate;
 }

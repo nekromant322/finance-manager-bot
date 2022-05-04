@@ -86,7 +86,13 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
         if (text.contains("delete_keyword")) {
           // удалить ключевое слово из категории
           deleteKeyWords(update, text);
+          return;
         }
+        if (text.contains("report")) {
+          addTransaction(update, text);
+          return;
+        }
+
         nonCommandInputService.processNonCommandInput(message.getText(), message.getChatId());
       }
       if (update.hasCallbackQuery()) {
@@ -184,6 +190,10 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
     categoryRepository.save(category);
     messageSender.sendMessage(
         "Ключевые слова были успешно удалены", String.valueOf(update.getMessage().getChatId()));
+  }
+
+  private void addTransaction(Update update, String text) {
+    // report Хлеб 500
   }
 
   private Category findCategory(Update update, String command, String text) {
