@@ -19,9 +19,6 @@ public class Transaction {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "comment")
-  private String commment;
-
   @Column(name = "sum")
   private Double sum;
 
