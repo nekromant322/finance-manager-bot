@@ -7,12 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfiguration {
-    @Bean
-    public OpenAPI getOpenApi() {
-        return new OpenAPI().info(
-                new Info()
-                        .title("finance manager")
-                        .description("Управление финансами и тратами")
-        );
-    }
+  @Bean
+  public OpenAPI getOpenApi() {
+    return new OpenAPI()
+        .info(new Info().title("finance manager").description("Управление финансами и тратами"));
+  }
 }

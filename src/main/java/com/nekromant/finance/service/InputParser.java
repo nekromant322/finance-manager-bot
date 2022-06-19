@@ -17,30 +17,29 @@ import java.util.regex.Pattern;
 @Slf4j
 public class InputParser {
 
-    public NonCommandInput parseNonCommandInput(String input) {
-        NonCommandInput result = new NonCommandInput();
-        String[] splitInput = null;
-        if (!input.isBlank()) {
-            splitInput = input.split(" ");
-        }
-        assert splitInput != null;
-        if (splitInput.length > 3) {
-            throw new CommandExecuteException(Errors.COMMAND_FORMAT);
-        }
-
-        //price keyword comment
-        try {
-            result.setMoney(Double.parseDouble(splitInput[0]));
-            result.setText(splitInput[1]);
-
-            if (splitInput.length == 3) {
-                result.setComment(splitInput[2]);
-            }
-        } catch (Exception e) {
-            log.error("Неверный формат команды");
-            return null;
-
-        }
-        return result;
+  public NonCommandInput parseNonCommandInput(String input) {
+    NonCommandInput result = new NonCommandInput();
+    String[] splitInput = null;
+    if (!input.isBlank()) {
+      splitInput = input.split(" ");
     }
+    assert splitInput != null;
+    if (splitInput.length > 3) {
+      throw new CommandExecuteException(Errors.COMMAND_FORMAT);
+    }
+
+    // price keyword comment
+    try {
+      result.setMoney(Double.parseDouble(splitInput[0]));
+      result.setText(splitInput[1]);
+
+      if (splitInput.length == 3) {
+        result.setComment(splitInput[2]);
+      }
+    } catch (Exception e) {
+      log.error("Неверный формат команды");
+      return null;
+    }
+    return result;
+  }
 }

@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class PaymentProcessor implements CallBackProcessor {
   @Override
   public void process(Update update) {}
-
   @Override
   public String getPrefix() {
     return "!payment";

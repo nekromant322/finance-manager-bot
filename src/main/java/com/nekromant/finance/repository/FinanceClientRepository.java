@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FinanceClientRepository extends CrudRepository<FinanceClient, Long> {
-
   FinanceClient findByChatId(Long id);
 }

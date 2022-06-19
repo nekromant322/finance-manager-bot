@@ -11,13 +11,10 @@ import static com.nekromant.finance.contants.Command.HOW_TO_USE;
 
 @Component
 public class GuideCommand extends FinanceManagerCommand {
-
   @Autowired private MessageSender messageSender;
-
   public GuideCommand() {
     super(HOW_TO_USE.getAlias(), HOW_TO_USE.getDescription());
   }
-
   @Override
   public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
     messageSender.sendMessage("", String.valueOf(chat.getId()));

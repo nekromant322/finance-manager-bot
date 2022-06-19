@@ -25,13 +25,21 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("spending-history")
 @Tag(name = "TransactionController", description = "API для получения истории трат")
 public class TransactionController {
-    @Autowired
-    private TransactionHistoryService transactionHistoryService;
+  @Autowired private TransactionHistoryService transactionHistoryService;
 
-    @Operation(summary = "Получение истории трат пользователя")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Запрос выполнен успешно", content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = TransactionDto.class)))})
-    @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<TransactionDto>> getHistory(@PathVariable Long clientId) {
-        return ResponseEntity.ok(transactionHistoryService.getHistory(clientId));
-    }
+  @Operation(summary = "Получение истории трат пользователя")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Запрос выполнен успешно",
+            content =
+                @Content(
+                    mediaType = APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = TransactionDto.class)))
+      })
+  @GetMapping("/client/{clientId}")
+  public ResponseEntity<List<TransactionDto>> getHistory(@PathVariable Long clientId) {
+    return ResponseEntity.ok(transactionHistoryService.getHistory(clientId));
+  }
 }

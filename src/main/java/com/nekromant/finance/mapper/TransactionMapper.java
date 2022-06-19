@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionMapper {
 
-    public TransactionDto toDto(Transaction transaction) {
-        return TransactionDto.builder()
-                .categoryId(transaction.getCategoryId())
-                .clientId(transaction.getClientId())
-                .comment(transaction.getComment())
-                .creationDate(transaction.getCreationDate())
-                .sum(transaction.getSum())
-                .build();
-    }
+  public TransactionDto toDto(Transaction transaction) {
+    return TransactionDto.builder()
+        .categoryId(transaction.getCategoryId())
+        .clientId(transaction.getClientId())
+        .comment(transaction.getComment())
+        .creationDate(transaction.getCreationDate())
+        .sum(transaction.getSum())
+        .build();
+  }
 }

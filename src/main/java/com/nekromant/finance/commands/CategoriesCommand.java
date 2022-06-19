@@ -22,9 +22,7 @@ import static com.nekromant.finance.contants.Command.CATEGORIES;
 
 @Component
 public class CategoriesCommand extends FinanceManagerCommand {
-
   @Autowired private FinanceClientRepository financeClientRepository;
-
   @Autowired private MessageSender messageSender;
 
   public CategoriesCommand() {

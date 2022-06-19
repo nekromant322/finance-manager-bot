@@ -8,18 +8,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Component
 public class TransactionHistoryService {
-    @Autowired
-    private TransactionRepository repository;
-    @Autowired
-    private TransactionMapper mapper;
+  @Autowired private TransactionRepository repository;
+  @Autowired private TransactionMapper mapper;
 
-    public List<TransactionDto> getHistory(Long clientId) {
-        return repository.findAllByClientId(clientId)
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-    }
+  public List<TransactionDto> getHistory(Long clientId) {
+    return repository.findAllByClientId(clientId).stream()
+        .map(mapper::toDto)
+        .collect(Collectors.toList());
+  }
 }

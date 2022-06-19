@@ -12,9 +12,9 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionDto {
-    private Double sum;
-    Long categoryId;
-    Long clientId;
-    ZonedDateTime creationDate;
-    private String comment;
+  private Double sum;
+  Long categoryId;
+  Long clientId;
+  ZonedDateTime creationDate;
+  private String comment;
 }
