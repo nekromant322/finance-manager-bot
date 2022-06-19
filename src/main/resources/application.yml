@@ -9,12 +9,9 @@ server:
   port: ${PORT:8080}
   host: "localhost"
 
-reminders:
-  maxDaysWithoutReport: 3
-
 spring:
   datasource:
-    password: ${PROD_POSTGRE_PASSWORD:postgres}
+    password: ${PROD_POSTGRE_PASSWORD:123}
     username: ${PROD_POSTGRE_USERNAME:postgres}
     url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432/}
     driver-class-name: org.postgresql.Driver

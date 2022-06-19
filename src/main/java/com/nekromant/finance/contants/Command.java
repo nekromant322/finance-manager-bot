@@ -2,9 +2,8 @@ package com.nekromant.finance.contants;
 
 public enum Command {
   START("start", "Начать работу с ботом"),
-  CATEGORIES("categories", "Редактировать категории"),
-  ADD_CATEGORY("add_category","Добавление категории"),
-  DELETE_CATEGORY("delete_category","Удаление категории");
+  HOW_TO_USE("how_to_use","Краткий гайд для работы с ботом"),
+  CATEGORIES("categories", "Редактировать категории");
 
   private String alias;
   private String description;
