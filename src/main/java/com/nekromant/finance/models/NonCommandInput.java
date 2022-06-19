@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class NonCommandInput {
   private double money;
   private String text;
+  private String comment;
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -15,15 +16,22 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @Entity
 public class Transaction {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "sum")
-  private Double sum;
+    @Column(name = "sum")
+    private Double sum;
 
-  @ManyToOne private Category category;
+    @Column(name = "category_id")
+    Long categoryId;
 
-  @Column(name = "creation_date")
-  private ZonedDateTime creationDate;
+    @Column(name = "client_id")
+    Long clientId;
+
+    @Column(name = "creation_date")
+    private ZonedDateTime creationDate;
+
+    @Column(name = "comment")
+    private String comment;
 }
