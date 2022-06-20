@@ -19,9 +19,7 @@ import static com.nekromant.finance.contants.Command.START;
 @Component
 public class StartCommand extends FinanceManagerCommand {
   @Autowired private FinanceClientRepository financeClientRepository;
-
   @Autowired private DefaultCategoriesProperties defaultCategories;
-
   @Autowired private FinanceClientService financeClientService;
 
   public StartCommand() {

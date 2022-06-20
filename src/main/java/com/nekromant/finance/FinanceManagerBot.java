@@ -37,7 +37,6 @@ public class FinanceManagerBot extends TelegramLongPollingCommandBot {
   private String botToken;
 
   private final NonCommandInputService nonCommandInputService;
-
   @Autowired private FinanceClientRepository clientRepository;
   @Autowired private CategoryRepository categoryRepository;
 

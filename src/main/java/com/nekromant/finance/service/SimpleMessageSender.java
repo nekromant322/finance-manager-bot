@@ -10,9 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 /** Нужен для отправки сообщений и не является командой по своей сути */
 @Service
 public class SimpleMessageSender {
-
   @Autowired private ApplicationContext applicationContext;
-
   @SneakyThrows
   public void sendMessage(String text, String chatId) {
     FinanceManagerBot bot = applicationContext.getBean(FinanceManagerBot.class);

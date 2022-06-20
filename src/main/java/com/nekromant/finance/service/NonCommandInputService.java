@@ -21,43 +21,44 @@ import java.util.Optional;
 @Service
 public class NonCommandInputService {
 
-    private final InputParser inputParser;
+  private final InputParser inputParser;
 
-    private final TransactionRepository transactionRepository;
-    private final FinanceClientRepository financeClientRepository;
+  private final TransactionRepository transactionRepository;
+  private final FinanceClientRepository financeClientRepository;
 
-    private final CategoryRepository categoryRepository;
-    private final MessageSender messageSender;
+  private final CategoryRepository categoryRepository;
+  private final MessageSender messageSender;
 
-    public void processNonCommandInput(String rawInput, long chatId) {
-        NonCommandInput nonCommandInput = inputParser.parseNonCommandInput(rawInput);
-        FinanceClient financeClient = null;
-        Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chatId);
-        List<Category> categories = new ArrayList<>();
-        if (optionalFinanceClient.isPresent()) {
-            financeClient = optionalFinanceClient.get();
-            categories = financeClient.getCategories();
-        }
-
-        Long userCategoryId = null;
-        for (Category category : categories) {
-            List<String> keywords = categoryRepository.findKeywordsByCategoryId(category.getId());
-            if (keywords.contains(nonCommandInput.getText())) {
-                userCategoryId = category.getId();
-                System.out.println("here");
-                break;
-            }
-        }
-        System.out.println(userCategoryId);
-
-        transactionRepository.save(Transaction.builder()
-                .categoryId(userCategoryId)
-                .sum(nonCommandInput.getMoney())
-                .comment(nonCommandInput.getComment())
-                .creationDate(ZonedDateTime.now())
-                .clientId(financeClient.getChatId())
-                .build());
-
-        messageSender.sendMessage("Транзакция добавлена", String.valueOf(chatId));
+  public void processNonCommandInput(String rawInput, long chatId) {
+    NonCommandInput nonCommandInput = inputParser.parseNonCommandInput(rawInput);
+    FinanceClient financeClient = null;
+    Optional<FinanceClient> optionalFinanceClient = financeClientRepository.findById(chatId);
+    List<Category> categories = new ArrayList<>();
+    if (optionalFinanceClient.isPresent()) {
+      financeClient = optionalFinanceClient.get();
+      categories = financeClient.getCategories();
     }
+
+    Long userCategoryId = null;
+    for (Category category : categories) {
+      List<String> keywords = categoryRepository.findKeywordsByCategoryId(category.getId());
+      if (keywords.contains(nonCommandInput.getText())) {
+        userCategoryId = category.getId();
+        System.out.println("here");
+        break;
+      }
+    }
+    System.out.println(userCategoryId);
+
+    transactionRepository.save(
+        Transaction.builder()
+            .categoryId(userCategoryId)
+            .sum(nonCommandInput.getMoney())
+            .comment(nonCommandInput.getComment())
+            .creationDate(ZonedDateTime.now())
+            .clientId(financeClient.getChatId())
+            .build());
+
+    messageSender.sendMessage("Транзакция добавлена", String.valueOf(chatId));
+  }
 }
