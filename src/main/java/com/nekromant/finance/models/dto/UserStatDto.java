@@ -5,16 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
+import java.util.List;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDto {
-  private Double sum;
-  String categoryName;
-  Long clientId;
-  ZonedDateTime creationDate;
-  private String comment;
+public class UserStatDto {
+  List<CategoryInfoDto> categoryUsageList;
+  Double totalMoneySpent;
 }

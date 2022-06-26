@@ -1,6 +1,7 @@
 package com.nekromant.finance.controller;
 
 import com.nekromant.finance.models.dto.TransactionDto;
+import com.nekromant.finance.models.dto.UserStatDto;
 import com.nekromant.finance.service.TransactionHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,5 +42,10 @@ public class TransactionController {
   @GetMapping("/client/{clientId}")
   public ResponseEntity<List<TransactionDto>> getHistory(@PathVariable Long clientId) {
     return ResponseEntity.ok(transactionHistoryService.getHistory(clientId));
+  }
+
+  @GetMapping("/client/{clientId}/stat")
+  public ResponseEntity<UserStatDto> getUserStat(@PathVariable Long clientId) {
+    return ResponseEntity.ok(transactionHistoryService.getUserStat(clientId));
   }
 }
