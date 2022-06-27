@@ -23,8 +23,8 @@ public class Transaction {
   @Column(name = "sum")
   private Double sum;
 
-  @Column(name = "category_id")
-  Long categoryId;
+  @Column(name = "category_name")
+  String categoryName;
 
   @Column(name = "client_id")
   Long clientId;

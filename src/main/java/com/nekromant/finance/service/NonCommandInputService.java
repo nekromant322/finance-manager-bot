@@ -44,7 +44,6 @@ public class NonCommandInputService {
       List<String> keywords = categoryRepository.findKeywordsByCategoryId(category.getId());
       if (keywords.contains(nonCommandInput.getText())) {
         userCategoryId = category.getId();
-        System.out.println("here");
         break;
       }
     }
@@ -52,7 +51,7 @@ public class NonCommandInputService {
 
     transactionRepository.save(
         Transaction.builder()
-            .categoryId(userCategoryId)
+            .categoryName(categoryRepository.findById(userCategoryId).get().getName())
             .sum(nonCommandInput.getMoney())
             .comment(nonCommandInput.getComment())
             .creationDate(ZonedDateTime.now())
