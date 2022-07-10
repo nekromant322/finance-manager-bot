@@ -12,8 +12,8 @@
 
     <groupId>com.nekromant</groupId>
     <artifactId>finance-manager-bot</artifactId>
-    <version>0.0.2</version>
-    <packaging>pom</packaging>
+    <version>0.0.2-SNAPSHOT</version>
+    <name>Finance manager telegram bot</name>
 
 
     <dependencies>

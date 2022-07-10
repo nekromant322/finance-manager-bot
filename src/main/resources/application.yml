@@ -1,6 +1,6 @@
 bot:
-  name: ${TELEGRAM_BOT_NAME:finance-manager}
-  token: ${TELEGRAM_BOT_TOKEN:5105426501:AAE4AgIsDfYA8wesDwsMKuk3UJ851Xq8XBI}
+  name: ${TELEGRAM_BOT_NAME}
+  token: ${TELEGRAM_BOT_TOKEN}
 
 owner:
   userName: Vladislav_Sedov
