@@ -21,7 +21,6 @@ spring:
     username: ${PROD_POSTGRE_USERNAME:postgres}
     url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432/}
     driver-class-name: org.postgresql.Driver
-
   application:
     name: finance-manager-bot
 
