@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.nekromant</groupId>
+    <groupId>vladdosiik</groupId>
     <artifactId>finance-manager-bot</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>Finance manager telegram bot</name>
@@ -100,6 +100,16 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                    <warName>vladdosiik</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>
