@@ -3,10 +3,11 @@ bot:
   token: ${TELEGRAM_BOT_TOKEN:5105426501:AAE4AgIsDfYA8wesDwsMKuk3UJ851Xq8XBI}
 
 owner:
-  userName: Vlad
+  userName: Vladislav_Sedov
 
 server:
   port: ${PORT:8080}
+  host: "https://telegramfinancialmanagement.herokuapp.com"
   servlet:
     context-path: /finance-manager
 
