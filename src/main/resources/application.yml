@@ -8,12 +8,7 @@ owner:
 server:
   port: ${PORT:8080}
   host: "https://telegramfinancialmanagement.herokuapp.com"
-  servlet:
-    context-path: /finance-manager
 
-management:
-  server:
-    port: 9595
 
 spring:
   datasource:
@@ -21,8 +16,6 @@ spring:
     username: ${PROD_POSTGRE_USERNAME:postgres}
     url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432/}
     driver-class-name: org.postgresql.Driver
-  application:
-    name: finance-manager-bot
 
   jpa:
     properties:
