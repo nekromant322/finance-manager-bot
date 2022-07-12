@@ -4,10 +4,8 @@ import com.nekromant.finance.models.Transaction;
 import com.nekromant.finance.models.dto.CategoryInfoDto;
 import com.nekromant.finance.models.dto.TransactionDto;
 import com.nekromant.finance.models.dto.UserStatDto;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Component;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

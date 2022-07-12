@@ -1,18 +1,14 @@
 bot:
-  name: ${TELEGRAM_BOT_NAME:finance-manager}
-  token: ${TELEGRAM_BOT_TOKEN:5105426501:AAE4AgIsDfYA8wesDwsMKuk3UJ851Xq8XBI}
+  name: ${TELEGRAM_BOT_NAME}
+  token: ${TELEGRAM_BOT_TOKEN}
 
 owner:
-  userName: Vlad
+  userName: Vladislav_Sedov
 
 server:
   port: ${PORT:8080}
-  servlet:
-    context-path: /finance-manager
+  host: "https://telegramfinancialmanagement.herokuapp.com"
 
-management:
-  server:
-    port: 9595
 
 spring:
   datasource:
@@ -20,9 +16,6 @@ spring:
     username: ${PROD_POSTGRE_USERNAME:postgres}
     url: ${PROD_POSTGRE_URL:jdbc:postgresql://localhost:5432/}
     driver-class-name: org.postgresql.Driver
-
-  application:
-    name: finance-manager-bot
 
   jpa:
     properties:
